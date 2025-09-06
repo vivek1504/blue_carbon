@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+// NGO Users
+model NGO {
+    id       Int       @id @default(autoincrement())
+    name     String
+    email    String    @unique
+    wallet   String?
+    projects Project[]
+}
+
+// Carbon Projects
+model Project {
+    id           Int      @id @default(autoincrement())
+    ngoId        Int
+    ngo_name     NGO      @relation(fields: [ngoId], references: [id])
+    name         String
+    area         Float
+    type         Type
+    fileCids     String[]
+    metadataHash String
+    location     String
+    date_planted DateTime
+    credits      Float    @default(0)
+    status       String   @default("pending")
+    txHash       String?
+    createdAt    DateTime @default(now())
+}
+
+enum Type {
+    MANGROVE
+    SEAGRASS
+    SALTMARSH
+    TIDALWETLAND
+}
