@@ -33,7 +33,7 @@ projectRouter.post("/ngo", async (req, res) => {
             data: {
                 name: req.body.name,
                 email: req.body.email,
-                wallet: req.body.wallet,
+                wallet: "Bn4UKo9aYYEq37fHQPoUAmBSAQvV8gEwytZdJ1GGfuXz",
             },
         });
         res.json({ status: "success", ngo });
@@ -44,8 +44,14 @@ projectRouter.post("/ngo", async (req, res) => {
 
 
 projectRouter.post("/upload", upload.array("files"), async (req, res) => {
-    const { ngoId, name, location, area, type, date_planted } = req.body;
+    const { ngoId, name, location, area, type } = req.body;
+    const typeUpper = type.toUpperCase();
+    if (!["MANGROVE", "SEAGRASS", "SALTMARSH", "TIDAL_WETLANDS"].includes(typeUpper)) {
+        return res.status(400).json({ status: "error", error: "Invalid project type" });
+    }
     const files = req.files as Express.Multer.File[];
+    console.log("Received upload request:", { ngoId, name, location, area, type, files });
+    const date_planted = "2023-01-01"; // Hardcoded for now
 
     if (!ngoId || !name || !location || !area || !type || !date_planted) {
         return res.status(400).json({ status: "error", error: "Missing required fields" });
@@ -79,7 +85,7 @@ projectRouter.post("/upload", upload.array("files"), async (req, res) => {
                 location,
                 date_planted: new Date(date_planted),
                 area: parseFloat(area),
-                type,
+                type: typeUpper,
                 fileCids: cids,
                 metadataHash,
                 status: "PENDING",
@@ -94,6 +100,7 @@ projectRouter.post("/upload", upload.array("files"), async (req, res) => {
         //@ts-ignore
         const tx = await registry.connect(wallet).createProject(bytes32Hash, cids);
         await tx.wait();
+        console.log("Transaction:", tx);
 
         res.json({
             status: "success",
@@ -105,6 +112,15 @@ projectRouter.post("/upload", upload.array("files"), async (req, res) => {
         });
     } catch (err: any) {
         console.error(err.response?.data || err.message);
+        res.status(500).json({ status: "error", error: err.message });
+    }
+});
+
+projectRouter.get("/all", async (req, res) => {
+    try {
+        const projects = await prisma.project.findMany({ include: { ngo_name: true } });
+        res.json(projects);
+    } catch (err: any) {
         res.status(500).json({ status: "error", error: err.message });
     }
 });
