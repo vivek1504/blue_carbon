@@ -8,11 +8,9 @@ This project consists of multiple interconnected components:
 
 ```
 ├── app/                 # React Native mobile app (Expo)
-├── CaelumX-main/       # Additional React Native app with blockchain features
 ├── Admin_Panel/        # Vite + React admin dashboard
 ├── backend/            # Express.js + Prisma backend API
 ├── blockchain/         # Hardhat smart contracts
-├── frontend/           # Additional React frontend (if applicable)
 └── README.md           # This file
 ```
 
@@ -87,9 +85,6 @@ cd Admin_Panel && npm install && cd ..
 # Mobile App
 cd app && npm install && cd ..
 
-# CaelumX Mobile App
-cd CaelumX-main && npm install && cd ..
-
 # Blockchain
 cd blockchain && npm install && cd ..
 ```
@@ -120,14 +115,6 @@ npm start
 # Follow Expo CLI instructions to run on device/simulator
 ```
 
-### CaelumX Mobile App
-
-```bash
-cd CaelumX-main
-npm start
-# Follow Expo CLI instructions to run on device/simulator
-```
-
 ### Blockchain Development
 
 ```bash
@@ -143,11 +130,6 @@ npx hardhat run scripts/deploy.ts --network localhost
 - **Technology**: React Native + Expo
 - **Features**: Carbon credit tracking, project management
 - **UI Library**: React Native Paper, UI Kitten, NativeWind
-
-### CaelumX App (`/CaelumX-main`)
-- **Technology**: React Native + Expo
-- **Features**: Blockchain integration, wallet connectivity
-- **Libraries**: WalletConnect, Ethers.js, Expo ecosystem
 
 ### Admin Panel (`/Admin_Panel`)
 - **Technology**: Vite + React + TypeScript
@@ -235,12 +217,6 @@ app/
 ├── components/          # Reusable components
 └── package.json
 
-CaelumX-main/
-├── app/                 # Expo Router pages
-├── components/          # React Native components
-└── package.json
-```
-
 ### API Endpoints
 
 - `POST /ngo` - Create NGO
@@ -282,20 +258,3 @@ The backend integrates with a BlueCarbonRegistry smart contract for:
 3. Make your changes
 4. Test thoroughly
 5. Submit a pull request
-
-## 📄 License
-
-[Add your license information here]
-
-## 🆘 Support
-
-For support and questions:
-- Check the documentation in each component directory
-- Review environment configuration
-- Ensure all dependencies are installed
-- Verify database connections and blockchain network settings
-
-## 🔄 Version History
-
-- v1.0.0 - Initial release with full-stack carbon credit management
-- [Add version history as project evolves]
