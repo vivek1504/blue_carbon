@@ -36,7 +36,7 @@ This project consists of multiple interconnected components:
 ### 1. Clone and Setup
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/vivek1504/blue_carbon
 cd carbon
 ```
 
